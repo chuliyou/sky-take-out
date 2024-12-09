@@ -8,10 +8,9 @@ import org.springframework.stereotype.Component;
 @ConfigurationProperties(prefix = "sky.alioss")
 @Data
 public class AliOssProperties {
-
-    private String endpoint;
     private String accessKeyId;
     private String accessKeySecret;
+    private String endpoint;
     private String bucketName;
 
 }
