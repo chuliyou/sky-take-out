@@ -2,6 +2,7 @@ package com.sky.service.impl;
 
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import com.google.common.collect.Lists;
 import com.sky.constant.MessageConstant;
 import com.sky.constant.StatusConstant;
 import com.sky.dto.DishDTO;
@@ -20,6 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -94,6 +96,40 @@ public class DishServiceImpl implements DishService {
         dishMapper.deleteByIds(ids);
 
         dishFlavorMapper.deleteByDishIds(ids);
+    }
+
+    /**
+     * 根据id查询菜品
+     * @param id
+     */
+    public DishVO getByIdWothFlavors(Long id) {
+        Dish dish = dishMapper.getById(id);
+        List<DishFlavor> dishFlavors = dishFlavorMapper.getByDishId(id);
+
+        DishVO dishVO = new DishVO();
+        BeanUtils.copyProperties(dish,dishVO);
+        dishVO.setFlavors(dishFlavors);
+        return dishVO;
+    }
+
+    /**
+     * 修改菜品及其口味信息
+     * @param dishDTO
+     */
+    @Transactional
+    public void updateWithFlavors(DishDTO dishDTO) {
+        Dish dish = new Dish();
+        BeanUtils.copyProperties(dishDTO,dish);
+        //修改菜品信息
+        dishMapper.update(dish);
+
+        List<DishFlavor> flavors = dishDTO.getFlavors();
+        //删除原有的口味信息
+        if(flavors != null && flavors.size() > 0){
+            dishFlavorMapper.deleteByDishIds(Lists.newArrayList(dish.getId()));
+        }
+        //新增现在的口味信息
+        dishFlavorMapper.insertBatch(flavors);
     }
 }
 
