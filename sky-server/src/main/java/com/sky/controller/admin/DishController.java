@@ -19,7 +19,7 @@ import java.util.List;
 
 @Slf4j
 @RestController
-@Api("菜品管理")
+@Api(tags = "菜品管理")
 @RequestMapping("/admin/dish")
 public class DishController {
 
