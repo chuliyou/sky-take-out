@@ -19,5 +19,5 @@ sky:
     bucket-name:
     endpoint:
   wechat:
-    appid: w
+    appid:
     secret:
