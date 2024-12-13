@@ -12,10 +12,10 @@ import java.util.List;
 public interface SetmealDishMapper {
     /**
      * 根据菜品id查询套餐id
-     * @param dishId
+     * @param dishIds
      * @return
      */
-    List<Long> getSetmealIdByDishIds(List<Long> dishId);
+    List<Long> getSetmealIdsByDishIds(List<Long> dishIds);
 
     /**
      * 批量插入套餐--菜品关系信息

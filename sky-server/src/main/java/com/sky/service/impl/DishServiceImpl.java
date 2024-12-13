@@ -95,8 +95,8 @@ public class DishServiceImpl implements DishService {
             }
         }
         //判断菜品是否被套餐关联
-        List<Long> setMealId = setmealDishMapper.getSetmealIdByDishIds(ids);
-        if(setMealId != null && setMealId.size() > 0){
+        List<Long> setMealIds = setmealDishMapper.getSetmealIdsByDishIds(ids);
+        if(setMealIds != null && setMealIds.size() > 0){
             throw new DeletionNotAllowedException(MessageConstant.DISH_BE_RELATED_BY_SETMEAL);
         }
         //删除菜品及其口味数据
@@ -156,7 +156,7 @@ public class DishServiceImpl implements DishService {
         //如果是停售，对相关套餐也要停售
         if (status == StatusConstant.DISABLE){
             ArrayList<Long> dishIds = Lists.newArrayList(id);
-            List<Long> setmealIds = setmealDishMapper.getSetmealIdByDishIds(dishIds);
+            List<Long> setmealIds = setmealDishMapper.getSetmealIdsByDishIds(dishIds);
 
             if(setmealIds != null && setmealIds.size() > 0){
                 for (Long setmealId : setmealIds) {
@@ -179,6 +179,45 @@ public class DishServiceImpl implements DishService {
         List<Dish> dishes = dishMapper.getByCategoryId(categoryId);
         return dishes;
     }
+
+    /**
+     * 条件查询菜品和口味
+     * @param dish
+     * @return
+     */
+    public List<DishVO> listWithFlavor(Dish dish) {
+        List<Dish> dishList = dishMapper.list(dish);
+
+        List<DishVO> dishVOList = new ArrayList<>();
+
+        for (Dish d : dishList) {
+            DishVO dishVO = new DishVO();
+            BeanUtils.copyProperties(d,dishVO);
+
+            //根据菜品id查询对应的口味
+            List<DishFlavor> flavors = dishFlavorMapper.getByDishId(d.getId());
+
+            dishVO.setFlavors(flavors);
+            dishVOList.add(dishVO);
+        }
+
+        return dishVOList;
+    }
+
+    /**
+     * 根据分类id查询菜品
+     * @param categoryId
+     * @return
+     */
+    public List<Dish> list(Long categoryId) {
+        Dish dish = Dish.builder()
+                .categoryId(categoryId)
+                .status(StatusConstant.ENABLE)
+                .build();
+        return dishMapper.list(dish);
+    }
+
+
 }
 
 
