@@ -132,11 +132,18 @@ public class DishServiceImpl implements DishService {
 
         List<DishFlavor> flavors = dishDTO.getFlavors();
         //删除原有的口味信息
-        if(flavors != null && flavors.size() > 0){
-            dishFlavorMapper.deleteByDishIds(Lists.newArrayList(dish.getId()));
-        }
+        dishFlavorMapper.deleteByDishIds(Lists.newArrayList(dish.getId()));
+
         //新增现在的口味信息
-        dishFlavorMapper.insertBatch(flavors);
+        if(flavors != null && flavors.size() > 0){
+            flavors.forEach(dishFlavor -> {
+                dishFlavor.setDishId(dish.getId());
+            });
+            //向口味表插入n条数据
+            dishFlavorMapper.insertBatch(flavors);
+        }
+
+
     }
 
     /**
