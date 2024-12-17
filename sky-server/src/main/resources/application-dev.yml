@@ -21,8 +21,8 @@ sky:
   wechat:
     appid:
     secret:
-    mchid :
-    mchSerialNo:
+    mchid : 1561414331
+    mchSerialNo: 4B3B3DC35414AD50B1B755BAF8DE9CC7CF407606
 #    privateKeyFilePath: D:\apiclient_key.pem
     privateKeyFilePath:
     apiV3Key: CZBK51236435wxpay435434323FFDuv3
