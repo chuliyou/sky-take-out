@@ -62,12 +62,10 @@ public interface OrderMapper {
 
     /**
      * 统计指定区间内满足条件的订单数量
-     * @param beginTime
-     * @param endTime
-     * @param status
+     * @param map
      * @return
      */
-    Integer countByMap(LocalDateTime beginTime, LocalDateTime endTime, Integer status);
+    Integer countByMap(Map map);
 
     List<GoodsSalesDTO> getTop10Sales(LocalDateTime beginTime, LocalDateTime endTime);
 

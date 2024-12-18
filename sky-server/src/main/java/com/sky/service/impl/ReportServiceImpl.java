@@ -162,7 +162,7 @@ public class ReportServiceImpl implements ReportService {
         map.put("endTime",endTime);
         map.put("status",status);
 
-        return orderMapper.countByMap(beginTime,endTime,status);
+        return orderMapper.countByMap(map);
     }
 
 
